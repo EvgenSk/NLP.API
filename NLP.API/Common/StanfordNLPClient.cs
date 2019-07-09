@@ -17,7 +17,7 @@ namespace NLP.API.Common
 			Options = options;
 		}
 
-		string EndPoint { get => Options.Port == 0 ? $"{Options.Host}" : $"{Options.Host}:{Options.Port}"; }
+		string EndPoint => Options.Port == 0 ? $"{Options.Host}" : $"{Options.Host}:{Options.Port}";
 
 		/// <summary>
 		/// Processes given text using selected annotators
@@ -27,19 +27,14 @@ namespace NLP.API.Common
 		/// <returns>JSON output from Stanford NLP service</returns>
 		public async Task<string> ProcessAsync(string text, Annotator.Type annotator)
 		{
-			string queryString = $"{EndPoint}/?{GetPropertiesString(annotator)}";
 			using (var httpClient = new HttpClient())
 			{
+				string queryString = $"{EndPoint}/?{GetPropertiesString(annotator)}";
 				var response = await httpClient.PostAsync(queryString, new StringContent(text));
-				var responseStringTask = response.Content.ReadAsStringAsync();
-				if (response.StatusCode == HttpStatusCode.OK)
-				{
-					return await responseStringTask;
-				}
-				else
-				{
-					return string.Empty;
-				}
+				return 
+					response.StatusCode == HttpStatusCode.OK 
+					? await response.Content.ReadAsStringAsync() 
+					: string.Empty;
 			}
 		}
 		string GetPropertiesString(IEnumerable<Annotator.Type> annotators)
