@@ -25,7 +25,7 @@ namespace NLP.API.Common
 		/// <param name="text">Text to be processed</param>
 		/// <param name="annotator">Annotators - flags - should be connected via |</param>
 		/// <returns>JSON output from Stanford NLP service</returns>
-		public async Task<string> ProcessAsync(string text, Annotator.Type annotator)
+		public async Task<string> ProcessTextAsync(string text, Annotator.Type annotator)
 		{
 			using (var httpClient = new HttpClient())
 			{
@@ -42,7 +42,7 @@ namespace NLP.API.Common
 			var strings = annotators.Select(a => a.ToString().ToLower());
 			var stringAnnotators = string.Join(",", strings);
 
-			string parametersJson = $"\"annotators\":\"{stringAnnotators}\",\"outputFormat\":\"JSON\"";
+			string parametersJson = $"\"annotators\":\"{stringAnnotators}\",\"outputFormat\":\"json\"";
 			return "properties={" + parametersJson + "}";
 		}
 

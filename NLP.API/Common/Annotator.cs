@@ -18,6 +18,6 @@ namespace NLP.API.Common
 			RegexNER = 32
 		}
 
-		public static List<Type> AllAnnotators { get; } = ((Type[])Enum.GetValues(typeof(Type))).ToList();
+		public static List<Type> AllAnnotators { get; } = Enum.GetValues(typeof(Type)).Cast<Type>().ToList();
 	}
 }

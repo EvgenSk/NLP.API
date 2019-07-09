@@ -8,7 +8,7 @@ namespace NLP.API.Common.Annotations
         public string lemma { get; set; }
         public int characterOffsetBegin { get; set; }
         public int characterOffsetEnd { get; set; }
-        public PartOfSpeech pos { get; set; }
+        public PartOfSpeech? pos { get; set; }
         public string before { get; set; }
         public string after { get; set; }
     }
