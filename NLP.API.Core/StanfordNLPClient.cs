@@ -1,4 +1,4 @@
-﻿using NLP.API.Common.Annotations;
+﻿using NLP.API.Core.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +7,14 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace NLP.API.Common
+namespace NLP.API.Core
 {
-	public class StanfordNLPClient
+	public class StanfordNLPClient : IStanfordNLPClient
 	{
-		public StanfordNLPClientOptions Options { get; }
+		StanfordNLPClientOptions Options { get; }
 
 		public StanfordNLPClient(StanfordNLPClientOptions options)
 		{
@@ -31,7 +33,7 @@ namespace NLP.API.Common
 		public async Task<AnnotatedText> ProcessTextAsync(string text, Annotator annotator)
 		{
 			string rawText = await ProcessTextRawResultAsync(text, annotator, OutputFormat.JSON);
-			return 
+			return
 				string.IsNullOrEmpty(rawText)
 				? null
 				: JsonConvert.DeserializeObject<AnnotatedText>(rawText);
@@ -50,9 +52,9 @@ namespace NLP.API.Common
 			{
 				string queryString = $"{EndPoint}/?{GetPropertiesString(annotator, outputFormat)}";
 				var response = await httpClient.PostAsync(queryString, new StringContent(text));
-				return 
-					response.StatusCode == HttpStatusCode.OK 
-					? await response.Content.ReadAsStringAsync() 
+				return
+					response.StatusCode == HttpStatusCode.OK
+					? await response.Content.ReadAsStringAsync()
 					: string.Empty;
 			}
 		}
@@ -85,5 +87,19 @@ namespace NLP.API.Common
 		Lemma = 8,
 		NER = 16,
 		RegexNER = 32
+	}
+
+	public class StanfordNLPClientFactory
+	{
+		public static StanfordNLPClient Create(IServiceProvider services)
+		{
+			IOptionsSnapshot<StanfordNLPClientOptions> optionsSnapshot = services.GetRequiredService<IOptionsSnapshot<StanfordNLPClientOptions>>();
+			return ActivatorUtilities.CreateInstance<StanfordNLPClient>(services, optionsSnapshot);
+		}
+		public static StanfordNLPClient Create(IServiceProvider services, string name)
+		{
+			IOptionsSnapshot<StanfordNLPClientOptions> optionsSnapshot = services.GetRequiredService<IOptionsSnapshot<StanfordNLPClientOptions>>();
+			return ActivatorUtilities.CreateInstance<StanfordNLPClient>(services, optionsSnapshot.Get(name));
+		}
 	}
 }

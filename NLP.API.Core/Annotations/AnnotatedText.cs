@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace NLP.API.Common.Annotations
+namespace NLP.API.Core.Annotations
 {
     public class AnnotatedText
     {

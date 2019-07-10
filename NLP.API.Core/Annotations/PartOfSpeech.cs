@@ -7,7 +7,7 @@ using System.Text;
 // taken from https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 //
 
-namespace NLP.API.Common.Annotations
+namespace NLP.API.Core.Annotations
 {
 	public enum PartOfSpeech
 	{

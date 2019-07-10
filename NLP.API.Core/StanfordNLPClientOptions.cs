@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NLP.API.Common
+namespace NLP.API.Core
 {
 	public class StanfordNLPClientOptions
 	{
