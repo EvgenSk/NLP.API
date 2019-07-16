@@ -17,10 +17,27 @@ steps:
     command: restore
     projects: '**/*.csproj'
 
+- task: SonarCloudPrepare@1
+  displayName: 'Prepare SonarCloud analysis'
+  inputs:
+    SonarCloud: 'SonarCloud Connection'
+    organization: '$(organization)'
+    projectKey: '$(projectKey)'
+    projectName: '$(projectName)'
+    projectVersion: '$(Build.BuildNumber)'    
+
 - task: DotNetCoreCLI@2
   displayName: 'Build the project - $(buildConfiguration)'
   inputs:
     command: build
     projects: '**/*.csproj'
     arguments: '--no-restore --configuration $(buildConfiguration)'
-    
+
+- task: SonarCloudAnalyze@1
+  displayName: 'Run SonarCloud code analysis'
+
+- task: SonarCloudPublish@1
+  displayName: 'Publish SonarCloud quality gate results'
+
+- task: WhiteSource Bolt@19
+  displayName: 'Run WhiteSource Bolt'
