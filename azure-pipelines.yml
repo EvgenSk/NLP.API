@@ -46,6 +46,6 @@ steps:
   displayName: 'Publish NuGet package'
   inputs:
     command: 'push'
-    publishVstsFeed: 'NLP-API'
+    publishVstsFeed: 'NLP.API'
     allowPackageConflicts: true
   condition: succeeded()
