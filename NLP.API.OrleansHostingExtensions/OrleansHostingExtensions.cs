@@ -11,10 +11,10 @@ namespace Orleans.Hosting
 {
 	public static class OrleansHostingExtensions
 	{
-		public static ISiloHostBuilder AddStanfordNLPClient(this ISiloHostBuilder builder, Action<StanfordNLPClientOptions> configureOptions) =>
+		public static ISiloHostBuilder AddStanfordNLPClient(this ISiloHostBuilder builder, Action<StanfordNLPClientOptions> configureOptions = null) =>
 			builder.AddStanfordNLPClient(ProviderConstants.DEFAULT_STORAGE_PROVIDER_NAME, configureOptions);
 
-		public static ISiloHostBuilder AddStanfordNLPClient(this ISiloHostBuilder builder, string name, Action<StanfordNLPClientOptions> configureOptions) =>
+		public static ISiloHostBuilder AddStanfordNLPClient(this ISiloHostBuilder builder, string name, Action<StanfordNLPClientOptions> configureOptions = null) =>
 			builder.ConfigureServices(s => s.AddStanfordNLPClient(name, ob => ob.Configure(configureOptions)));
 
 		public static IServiceCollection AddStanfordNLPClient(this IServiceCollection services, string name, Action<OptionsBuilder<StanfordNLPClientOptions>> configureOptions = null)

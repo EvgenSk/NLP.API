@@ -7,7 +7,7 @@ namespace Microsoft.Extensions.Hosting
 {
 	public static class HostingExtensions
 	{
-		public static IHostBuilder AddStanfordNLPClient(this IHostBuilder hostBuilder, Action<StanfordNLPClientOptions> configureOptions) =>
+		public static IHostBuilder AddStanfordNLPClient(this IHostBuilder hostBuilder, Action<StanfordNLPClientOptions> configureOptions = null) =>
 			hostBuilder.ConfigureServices(s => s.AddStanfordNLPClient(ob => ob.Configure(configureOptions)));
 
 		public static IServiceCollection AddStanfordNLPClient(this IServiceCollection services, Action<OptionsBuilder<StanfordNLPClientOptions>> configureOptions = null)
