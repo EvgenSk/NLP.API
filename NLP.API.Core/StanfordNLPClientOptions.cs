@@ -8,5 +8,7 @@ namespace NLP.API.Core
 	{
 		public string Host { get; set; }
 		public int Port { get; set; }
-	}
+        public Annotator Annotator { get; set; } = Annotator.Default;
+        public OutputFormat OutputFormat { get; set; } = OutputFormat.JSON;
+    }
 }
