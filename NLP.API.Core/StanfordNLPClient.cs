@@ -21,7 +21,6 @@ namespace NLP.API.Core
 			Options = options;
 		}
 
-		string EndPoint => Options.Port == 0 ? $"{Options.Host}" : $"{Options.Host}:{Options.Port}";
 		static List<Annotator> AllAnnotators { get; } = Enum.GetValues(typeof(Annotator)).Cast<Annotator>().ToList();
 
         /// <summary>
@@ -66,7 +65,7 @@ namespace NLP.API.Core
 		{
 			using (var httpClient = new HttpClient())
 			{
-				string queryString = $"{EndPoint}/?{GetPropertiesString(annotator, outputFormat)}";
+				string queryString = $"{Options.ConnectionString}/?{GetPropertiesString(annotator, outputFormat)}";
 				var response = await httpClient.PostAsync(queryString, new StringContent(text));
 				return
 					response.StatusCode == HttpStatusCode.OK
