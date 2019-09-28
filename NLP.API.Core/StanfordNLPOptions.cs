@@ -10,12 +10,12 @@ namespace NLP.API.Core
         /// <summary>
         /// Default is "localhost:9000"
         /// </summary>
-        public string ConnectionString { get; set; } = "localhost:9000";
+        public string ConnectionString { get; set; } = "https://localhost:9000";
 
         /// <summary>
-        /// Default is Annotator.Default == Tokenize | Ssplit | Lemma | Lemma | POS
+        /// Default is Annotator.Default == Tokenize | Ssplit | Lemma | POS
         /// </summary>
-        public Annotator Annotator { get; set; } = Annotator.Default;
+        public Annotator Annotator { get; set; } = StanfordNLPClient.DefaultAnnotator;
 
         /// <summary>
         /// Default is JSON

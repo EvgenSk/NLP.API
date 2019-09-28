@@ -16,7 +16,21 @@ namespace NLP.API.Core
 	{
 		private StanfordNLPOptions Options { get; }
 
-		public StanfordNLPClient(IOptions<StanfordNLPOptions> options)
+        public static Annotator DefaultAnnotator =
+            Annotator.Tokenize
+            | Annotator.Ssplit
+            | Annotator.Lemma
+            | Annotator.POS;
+
+        public static Annotator AllAnnotator =
+            Annotator.Tokenize
+            | Annotator.Ssplit
+            | Annotator.POS
+            | Annotator.Lemma
+            | Annotator.NER
+            | Annotator.RegexNER;
+
+        public StanfordNLPClient(IOptions<StanfordNLPOptions> options)
 		{
 			Options = options.Value;
 		}
@@ -29,7 +43,7 @@ namespace NLP.API.Core
         /// <param name="text">Text to be annotated</param>
         /// <returns>Text, annotated with given annotators</returns>
         public Task<AnnotatedText> AnnotateTextAsync(string text) =>
-            AnnotateTextAsync(text, Options?.Annotator ?? Annotator.Default);
+            AnnotateTextAsync(text, Options?.Annotator ?? DefaultAnnotator);
 
         /// <summary>
         /// Processes given text using selected annotators
@@ -52,7 +66,7 @@ namespace NLP.API.Core
         /// <param name="text">Text to be annotated</param>
         /// <returns>string output from Stanford NLP service in form of selected output format</returns>
         public Task<string> AnnotateTextRawResultAsync(string text) =>
-            AnnotateTextRawResultAsync(text, Options?.Annotator ?? Annotator.Default, Options?.OutputFormat ?? OutputFormat.JSON);
+            AnnotateTextRawResultAsync(text, Options?.Annotator ?? DefaultAnnotator, Options?.OutputFormat ?? OutputFormat.JSON);
 
         /// <summary>
         /// Processes given text using selected annotators
@@ -102,8 +116,6 @@ namespace NLP.API.Core
 		Lemma = 8,
 		NER = 16,
 		RegexNER = 32,
-        Default = Tokenize | Ssplit | Lemma | Lemma | POS,
-        All = Tokenize | Ssplit | POS | Lemma | NER | RegexNER
 	}
 
 	public static class StanfordNLPClientFactory
