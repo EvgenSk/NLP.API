@@ -14,11 +14,11 @@ namespace NLP.API.Core
 {
 	public class StanfordNLPClient : IStanfordNLPClient
 	{
-		private StanfordNLPClientOptions Options { get; }
+		private StanfordNLPOptions Options { get; }
 
-		public StanfordNLPClient(StanfordNLPClientOptions options)
+		public StanfordNLPClient(IOptions<StanfordNLPOptions> options)
 		{
-			Options = options;
+			Options = options.Value;
 		}
 
 		static List<Annotator> AllAnnotators { get; } = Enum.GetValues(typeof(Annotator)).Cast<Annotator>().ToList();
@@ -110,13 +110,13 @@ namespace NLP.API.Core
 	{
 		public static StanfordNLPClient Create(IServiceProvider services)
 		{
-			IOptionsSnapshot<StanfordNLPClientOptions> optionsSnapshot = services.GetRequiredService<IOptionsSnapshot<StanfordNLPClientOptions>>();
+			IOptionsSnapshot<StanfordNLPOptions> optionsSnapshot = services.GetRequiredService<IOptionsSnapshot<StanfordNLPOptions>>();
 			return ActivatorUtilities.CreateInstance<StanfordNLPClient>(services, optionsSnapshot);
 		}
 
 		public static StanfordNLPClient Create(IServiceProvider services, string name)
 		{
-			IOptionsSnapshot<StanfordNLPClientOptions> optionsSnapshot = services.GetRequiredService<IOptionsSnapshot<StanfordNLPClientOptions>>();
+			IOptionsSnapshot<StanfordNLPOptions> optionsSnapshot = services.GetRequiredService<IOptionsSnapshot<StanfordNLPOptions>>();
 			return ActivatorUtilities.CreateInstance<StanfordNLPClient>(services, optionsSnapshot.Get(name));
 		}
 	}
