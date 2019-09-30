@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.Hosting
 		public static IServiceCollection AddStanfordNLPClient(this IServiceCollection services, Action<OptionsBuilder<StanfordNLPOptions>> configureOptions = null)
 		{
 			configureOptions?.Invoke(services.AddOptions<StanfordNLPOptions>());
-			return services.AddSingleton<IStanfordNLPClient,StanfordNLPClient>(StanfordNLPClientFactory.Create);
+			return services.AddSingleton<IStanfordNLPClient, StanfordNLPClient>(StanfordNLPClientFactory.Create);
 		}
 	}
 }

@@ -16,42 +16,42 @@ namespace NLP.API.Core
 	{
 		private StanfordNLPOptions Options { get; }
 
-        public static Annotator DefaultAnnotator =
-            Annotator.Tokenize
-            | Annotator.Ssplit
-            | Annotator.Lemma
-            | Annotator.POS;
+		public static Annotator DefaultAnnotator =
+			Annotator.Tokenize
+			| Annotator.Ssplit
+			| Annotator.Lemma
+			| Annotator.POS;
 
-        public static Annotator AllAnnotator =
-            Annotator.Tokenize
-            | Annotator.Ssplit
-            | Annotator.POS
-            | Annotator.Lemma
-            | Annotator.NER
-            | Annotator.RegexNER;
+		public static Annotator AllAnnotator =
+			Annotator.Tokenize
+			| Annotator.Ssplit
+			| Annotator.POS
+			| Annotator.Lemma
+			| Annotator.NER
+			| Annotator.RegexNER;
 
-        public StanfordNLPClient(IOptions<StanfordNLPOptions> options)
+		public StanfordNLPClient(IOptions<StanfordNLPOptions> options)
 		{
 			Options = options.Value;
 		}
 
 		static List<Annotator> AllAnnotators { get; } = Enum.GetValues(typeof(Annotator)).Cast<Annotator>().ToList();
 
-        /// <summary>
-        /// Processes given text using annotators from options
-        /// </summary>
-        /// <param name="text">Text to be annotated</param>
-        /// <returns>Text, annotated with given annotators</returns>
-        public Task<AnnotatedText> AnnotateTextAsync(string text) =>
-            AnnotateTextAsync(text, Options?.Annotator ?? DefaultAnnotator);
+		/// <summary>
+		/// Processes given text using annotators from options
+		/// </summary>
+		/// <param name="text">Text to be annotated</param>
+		/// <returns>Text, annotated with given annotators</returns>
+		public Task<AnnotatedText> AnnotateTextAsync(string text) =>
+			AnnotateTextAsync(text, Options?.Annotator ?? DefaultAnnotator);
 
-        /// <summary>
-        /// Processes given text using selected annotators
-        /// </summary>
-        /// <param name="text">Text to be annotated</param>
-        /// <param name="annotator">Annotators - flags - should be connected via |</param>
-        /// <returns>Text, annotated with given annotators</returns>
-        public async Task<AnnotatedText> AnnotateTextAsync(string text, Annotator annotator)
+		/// <summary>
+		/// Processes given text using selected annotators
+		/// </summary>
+		/// <param name="text">Text to be annotated</param>
+		/// <param name="annotator">Annotators - flags - should be connected via |</param>
+		/// <returns>Text, annotated with given annotators</returns>
+		public async Task<AnnotatedText> AnnotateTextAsync(string text, Annotator annotator)
 		{
 			string rawText = await AnnotateTextRawResultAsync(text, annotator, OutputFormat.JSON);
 			return
@@ -60,22 +60,22 @@ namespace NLP.API.Core
 				: JsonConvert.DeserializeObject<AnnotatedText>(rawText);
 		}
 
-        /// <summary>
-        /// Processes given text using annotators and output format parameters from options
-        /// </summary>
-        /// <param name="text">Text to be annotated</param>
-        /// <returns>string output from Stanford NLP service in form of selected output format</returns>
-        public Task<string> AnnotateTextRawResultAsync(string text) =>
-            AnnotateTextRawResultAsync(text, Options?.Annotator ?? DefaultAnnotator, Options?.OutputFormat ?? OutputFormat.JSON);
+		/// <summary>
+		/// Processes given text using annotators and output format parameters from options
+		/// </summary>
+		/// <param name="text">Text to be annotated</param>
+		/// <returns>string output from Stanford NLP service in form of selected output format</returns>
+		public Task<string> AnnotateTextRawResultAsync(string text) =>
+			AnnotateTextRawResultAsync(text, Options?.Annotator ?? DefaultAnnotator, Options?.OutputFormat ?? OutputFormat.JSON);
 
-        /// <summary>
-        /// Processes given text using selected annotators
-        /// </summary>
-        /// <param name="text">Text to be processed</param>
-        /// <param name="annotator">Annotators - flags - should be connected via |</param>
-        /// <param name="outputFormat">Output Format - one of [JSON, XML, Text]</param>
-        /// <returns>string output from Stanford NLP service in form of selected output format</returns>
-        public async Task<string> AnnotateTextRawResultAsync(string text, Annotator annotator, OutputFormat outputFormat = OutputFormat.JSON)
+		/// <summary>
+		/// Processes given text using selected annotators
+		/// </summary>
+		/// <param name="text">Text to be processed</param>
+		/// <param name="annotator">Annotators - flags - should be connected via |</param>
+		/// <param name="outputFormat">Output Format - one of [JSON, XML, Text]</param>
+		/// <returns>string output from Stanford NLP service in form of selected output format</returns>
+		public async Task<string> AnnotateTextRawResultAsync(string text, Annotator annotator, OutputFormat outputFormat = OutputFormat.JSON)
 		{
 			using (var httpClient = new HttpClient())
 			{

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NLP.API.OrleansHostingExtensions
 {
-    public interface IStanfordNLPGrainServiceClient : IGrainServiceClient<IStanfordNLPGrainService>, IStanfordNLPGrainService
-    {
-    }
+	public interface IStanfordNLPGrainServiceClient : IGrainServiceClient<IStanfordNLPGrainService>, IStanfordNLPGrainService
+	{
+	}
 }
