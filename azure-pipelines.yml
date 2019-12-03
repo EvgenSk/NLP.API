@@ -3,7 +3,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  dotnetSdkVersion: '2.2.301'
+  dotnetSdkVersion: '3.0.101'
   major: '0'
   minor: '1'
   patch: '0'  
