@@ -3,16 +3,18 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  dotnetSdkVersion: '3.0.101'
+  dotnetSdkVersion: '3.x'
   major: '0'
   minor: '1'
   patch: '0'  
 
 steps:
-- task: DotNetCoreInstaller@0
+- task: UseDotNet@2
   displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
   inputs:
+    packageType: sdk
     version: '$(dotnetSdkVersion)'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore project dependencies'
@@ -35,7 +37,6 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
-    nobuild: true
     arguments: '--configuration $(buildConfiguration)'
     versioningScheme: byPrereleaseNumber
     majorVersion: '$(major)'
