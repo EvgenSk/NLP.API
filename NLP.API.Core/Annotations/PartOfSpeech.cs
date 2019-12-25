@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 //
@@ -29,7 +30,8 @@ namespace NLP.API.Core.Annotations
 		PDT,  //  Predeterminer
 		POS,  //  Possessive ending
 		PRP,  //  Personal pronoun
-		PRPs, //  Possessive pronoun // TODO: custom parsing from 'PRP$'
+		[EnumMember(Value = "PRP$")]
+		PRPs, //  Possessive pronoun
 		RB,   //  Adverb
 		RBR,  //  Adverb, comparative
 		RBS,  //  Adverb, superlative
@@ -45,7 +47,8 @@ namespace NLP.API.Core.Annotations
 		VBZ,  //  Verb, 3rd person singular present
 		WDT,  //  Wh-determiner
 		WP,   //  Wh-pronoun
-		WPs,  //  Possessive wh-pronoun  // TODO: custom parsing from 'WP$'
+		[EnumMember(Value = "WP$")]
+		WPs,  //  Possessive wh-pronoun
 		WRB,  //  Wh-adverb           
 	}
 }
