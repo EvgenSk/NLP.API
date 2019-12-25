@@ -32,7 +32,7 @@ namespace Orleans.Hosting
 		public static IServiceCollection AddStanfordNLPClient(this IServiceCollection services, Action<OptionsBuilder<StanfordNLPOptions>> configureOptions = null)
 		{
 			configureOptions?.Invoke(services.AddOptions<StanfordNLPOptions>());
-			return services.AddSingleton(StanfordNLPClientFactory.Create);
+			return services.AddSingleton<IStanfordNLPClient, StanfordNLPClient>();
 		}
 
 		public static ISiloHostBuilder AddStanfordNLPGrainService(this ISiloHostBuilder builder, Action<OptionsBuilder<StanfordNLPOptions>> configureOptions)

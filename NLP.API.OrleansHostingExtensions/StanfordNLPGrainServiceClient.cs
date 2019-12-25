@@ -10,21 +10,24 @@ namespace NLP.API.OrleansHostingExtensions
 {
 	public class StanfordNLPGrainServiceClient : GrainServiceClient<IStanfordNLPGrainService>, IStanfordNLPGrainServiceClient
 	{
-		public StanfordNLPGrainServiceClient(IServiceProvider serviceProvider)
+		private readonly IStanfordNLPClient client;
+
+		public StanfordNLPGrainServiceClient(IServiceProvider serviceProvider, IStanfordNLPClient client)
 			: base(serviceProvider)
 		{
+			this.client = client;
 		}
 
 		public Task<AnnotatedText> AnnotateTextAsync(string text) =>
-			GrainService.AnnotateTextAsync(text);
+			client.AnnotateTextAsync(text);
 
 		public Task<AnnotatedText> AnnotateTextAsync(string text, Annotator annotator) =>
-			GrainService.AnnotateTextAsync(text, annotator);
+			client.AnnotateTextAsync(text, annotator);
 
 		public Task<string> AnnotateTextRawResultAsync(string text) =>
-			GrainService.AnnotateTextRawResultAsync(text);
+			client.AnnotateTextRawResultAsync(text);
 
 		public Task<string> AnnotateTextRawResultAsync(string text, Annotator annotator, OutputFormat outputFormat = OutputFormat.JSON) =>
-			AnnotateTextRawResultAsync(text, annotator, outputFormat);
+			client.AnnotateTextRawResultAsync(text, annotator, outputFormat);
 	}
 }
