@@ -9,11 +9,23 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Converters;
 
 namespace NLP.API.Core
 {
 	public class StanfordNLPClient : IStanfordNLPClient
 	{
+		private static JsonSerializerSettings jsonSerializerSettings =
+			new JsonSerializerSettings
+			{
+				Converters = new List<JsonConverter> { new StringEnumConverter() },
+				MissingMemberHandling = MissingMemberHandling.Ignore, // TODO: why doesn't it work?
+				Error = (s, eea) =>
+				{
+					eea.ErrorContext.Handled = true;
+				}
+			};
+
 		private StanfordNLPOptions Options { get; }
 
 		public static Annotator DefaultAnnotator =
@@ -57,7 +69,7 @@ namespace NLP.API.Core
 			return
 				string.IsNullOrEmpty(rawText)
 				? null
-				: JsonConvert.DeserializeObject<AnnotatedText>(rawText);
+				: JsonConvert.DeserializeObject<AnnotatedText>(rawText, jsonSerializerSettings);
 		}
 
 		/// <summary>
@@ -96,7 +108,7 @@ namespace NLP.API.Core
 
 		string GetPropertiesString(IEnumerable<Annotator> annotators, OutputFormat outputFormat)
 		{
-			var strings = annotators.Select(a => a.ToString().ToLower());
+			var strings = annotators.Select(a => a.ToString().ToLowerInvariant());
 			var stringAnnotators = string.Join(",", strings);
 
 			string parametersJson = $"\"annotators\":\"{stringAnnotators}\",\"outputFormat\":\"{outputFormat.ToString().ToLowerInvariant()}\"";
