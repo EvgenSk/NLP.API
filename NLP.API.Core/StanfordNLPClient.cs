@@ -19,10 +19,9 @@ namespace NLP.API.Core
 			new JsonSerializerSettings
 			{
 				Converters = new List<JsonConverter> { new StringEnumConverter() },
-				MissingMemberHandling = MissingMemberHandling.Ignore, // TODO: why doesn't it work?
 				Error = (s, eea) =>
 				{
-					eea.ErrorContext.Handled = true;
+					eea.ErrorContext.Handled = true; // TODO: maybe it's worthy add logging for some cases
 				}
 			};
 
